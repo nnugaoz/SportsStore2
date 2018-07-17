@@ -1,0 +1,59 @@
+﻿@model SportsStore2.WebUI.Models.CartIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    SubTotal
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var line in Model.Cart.Lines)
+            {
+                <tr>
+                    <td>@line.Product.Name</td>
+                    <td>@line.Quantity</td>
+                    <td>@line.Product.Price.ToString("c")</td>
+                    <td>@((line.Product.Price*line.Quantity).ToString("c"))</td>
+                    <td>
+                        @using (Html.BeginForm("RemoveFromCart", "Cart"))
+                        {
+                            @Html.Hidden("ProductID",line.Product.ProductID)
+                            @Html.Hidden("ReturnUrl",Request.Url.PathAndQuery)
+                            <input type="submit" class="btn btn-warning" value="Remove" />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total</td>
+                <td>@Model.Cart.ComputeTotal().ToString("c")</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div>
+    <a class="btn btn-default" href="@Model.ReturnUrl">Continue Shopping</a>
+</div>
+

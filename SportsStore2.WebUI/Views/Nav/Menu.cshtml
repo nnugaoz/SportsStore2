@@ -1,0 +1,19 @@
+﻿@model IEnumerable<string>
+
+@{
+    Layout = null;
+}
+
+@Html.ActionLink("Home", "List", "Product", new { SelectedCategory = "", PageIndex = 1 }, new { @class = "btn btn-block btn-default" })
+
+@foreach (var category in Model)
+{
+    if (category == ViewBag.SelectedCategory)
+    {
+        @Html.ActionLink(category, "List", "Product", new { SelectedCategory = category, PageIndex = 1 }, new { @class = "btn btn-block btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink(category, "List", "Product", new { SelectedCategory = category, PageIndex = 1 }, new { @class = "btn btn-block btn-default" })
+    }
+}
