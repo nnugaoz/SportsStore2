@@ -1,13 +1,15 @@
 ﻿using Ninject;
 using SportsStore2.Domain.Abstract;
 using SportsStore2.Domain.Concrete;
+using SportsStore2.WebUI.Infrastructure.Abstract;
+using SportsStore2.WebUI.Infrastructure.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace SportsStore2.WebUI.Infrastructure
 {
-    public class NInjectDependencyResolver:IDependencyResolver
+    public class NInjectDependencyResolver : IDependencyResolver
     {
         IKernel kernel;
 
@@ -22,6 +24,8 @@ namespace SportsStore2.WebUI.Infrastructure
             kernel.Bind<IProductRepository>().To<EFProductRepository>();
 
             kernel.Bind<IOrderProcessor>().To<SimplestOrderProcessor>();
+
+            kernel.Bind<IAuthor>().To<FormAuthenticate>();
         }
 
         public object GetService(Type serviceType)

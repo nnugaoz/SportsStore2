@@ -1,0 +1,42 @@
+﻿@model SportsStore2.Domain.Entities.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>Edit @Model.Name</h3>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="form-horizontal">
+            @Html.HiddenFor(e => e.ProductID)
+            <div class="panel-body">
+                @foreach (var property in ViewData.ModelMetadata.Properties)
+                {
+                    <div class="form-group">
+                        <label>@property.PropertyName</label>
+                        @if (property.PropertyName != "ProductID")
+                        {
+                            if (property.PropertyName == "Description")
+                            {
+                                @Html.TextArea(property.PropertyName, new { @class = "form-control", rows = 2 })
+                            }
+                            else
+                            {
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            }
+                        }
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                }
+            </div>
+            <div class="panel-footer">
+                <input type="submit" class="btn btn-primary" value="Save" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    }
+</div>

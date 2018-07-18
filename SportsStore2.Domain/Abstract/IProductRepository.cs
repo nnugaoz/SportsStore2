@@ -10,5 +10,9 @@ namespace SportsStore2.Domain.Abstract
     public interface IProductRepository
     {
         IEnumerable<Product> Products { get; }
+
+        void Save(Product p_Product);
+
+        Product Delete(int p_ProductID);
     }
 }
