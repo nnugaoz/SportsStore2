@@ -10,11 +10,11 @@ namespace SportsStore2.Domain.Entities
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public void AddItem(Product Product,int Quantity)
+        public void AddItem(Product Product, int Quantity)
         {
             CartLine line = lineCollection.FirstOrDefault(e => e.Product.ProductID == Product.ProductID);
 
-            if(line!=null)
+            if (line != null)
             {
                 line.Quantity += 1;
             }
@@ -27,6 +27,11 @@ namespace SportsStore2.Domain.Entities
         public void RemoveItem(int ProductID)
         {
             lineCollection.RemoveAll(e => e.Product.ProductID == ProductID);
+        }
+
+        public void Clear()
+        {
+            lineCollection.Clear();
         }
 
         public decimal ComputeTotal()

@@ -1,0 +1,33 @@
+﻿@model SportsStore2.Domain.Entities.ShippingDetails
+
+@{
+    ViewBag.Title = "CheckOut";
+}
+@using (Html.BeginForm())
+{
+    <h3>Check Out Now</h3>
+    <span class="text-info">Please input your shipping details, We'll Ship your goods as soon as possible.</span>
+    <h4>Ship To</h4>
+    foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        <div class="form-group">
+            @if (property.PropertyName == "GiftWrap")
+            {
+                <div class="checkbox">
+                    <label>
+                        @Html.EditorFor(e => e.GiftWrap)
+                        Gift Wrap
+                    </label>
+                </div>
+            }
+            else
+            {
+                <label class="control-label">@property.PropertyName</label>
+                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+            }
+            @Html.ValidationMessage(property.PropertyName)
+        </div>
+    }
+    <input type="submit" class="btn btn-warning" value="Commit Order" />
+
+}

@@ -1,15 +1,14 @@
 ﻿using SportsStore2.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportsStore2.Domain.Concrete
+namespace SportsStore2.Domain.Abstract
 {
-    public class EFDbContext : DbContext
+    public interface IOrderProcessor
     {
-        public DbSet<Product> Products { get; set; }
+        void ProcessOrder(Cart p_Cart, ShippingDetails p_ShippingDetails);
     }
 }

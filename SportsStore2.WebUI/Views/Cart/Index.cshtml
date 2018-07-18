@@ -26,18 +26,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var line in Model.Cart.Lines)
+            @foreach (var line in Model.Cart.Lines)
             {
                 <tr>
                     <td>@line.Product.Name</td>
                     <td>@line.Quantity</td>
                     <td>@line.Product.Price.ToString("c")</td>
-                    <td>@((line.Product.Price*line.Quantity).ToString("c"))</td>
+                    <td>@((line.Product.Price * line.Quantity).ToString("c"))</td>
                     <td>
                         @using (Html.BeginForm("RemoveFromCart", "Cart"))
                         {
-                            @Html.Hidden("ProductID",line.Product.ProductID)
-                            @Html.Hidden("ReturnUrl",Request.Url.PathAndQuery)
+                            @Html.Hidden("ProductID", line.Product.ProductID)
+                            @Html.Hidden("ReturnUrl", Request.Url.PathAndQuery)
                             <input type="submit" class="btn btn-warning" value="Remove" />
                         }
                     </td>
@@ -53,7 +53,7 @@
         </tfoot>
     </table>
 </div>
-<div>
+<div class="text-center">
     <a class="btn btn-default" href="@Model.ReturnUrl">Continue Shopping</a>
+    @Html.ActionLink("Check Out Now", "Checkout", null, new { @class = "btn btn-info" })
 </div>
-

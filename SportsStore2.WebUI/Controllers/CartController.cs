@@ -12,48 +12,61 @@ namespace SportsStore2.WebUI.Controllers
     public class CartController : Controller
     {
         IProductRepository repository;
+        IOrderProcessor orderProcessor;
 
-        public CartController(IProductRepository repository)
+        public CartController(IProductRepository repository,IOrderProcessor orderProcessor)
         {
             this.repository = repository;
+            this.orderProcessor = orderProcessor;
         }
 
-        public RedirectToRouteResult AddToCart(int ProductID, string ReturnUrl)
+        public RedirectToRouteResult AddToCart(Cart Cart, int ProductID, string ReturnUrl)
         {
-            Product Product = repository.Products.FirstOrDefault(e=>e.ProductID==ProductID);
-            if(Product!=null)
+            Product Product = repository.Products.FirstOrDefault(e => e.ProductID == ProductID);
+            if (Product != null)
             {
-                GetCart().AddItem(Product, 1);
+                Cart.AddItem(Product, 1);
             }
-            return RedirectToAction("Index", new { ReturnUrl=ReturnUrl});
-        }
-
-        public RedirectToRouteResult RemoveFromCart(int ProductID, string ReturnUrl)
-        {
-            GetCart().RemoveItem(ProductID);
             return RedirectToAction("Index", new { ReturnUrl = ReturnUrl });
         }
 
-        private Cart GetCart()
+        public RedirectToRouteResult RemoveFromCart(Cart Cart, int ProductID, string ReturnUrl)
         {
-            Cart Cart = (Cart)Session["Cart"];
-
-            if (Cart == null)
-            {
-                Cart = new Cart();
-                Session["Cart"] = Cart;
-            }
-            return Cart;
+            Cart.RemoveItem(ProductID);
+            return RedirectToAction("Index", new { ReturnUrl = ReturnUrl });
         }
 
+        public PartialViewResult Summary(Cart Cart)
+        {
+            return PartialView(Cart);
+        }
 
+        public ViewResult CheckOut()
+        {
+            return View(new ShippingDetails());
+        }
+
+        [HttpPost]
+        public ViewResult CheckOut(Cart Cart,ShippingDetails shippingDetails)
+        {
+            if(ModelState.IsValid)
+            {
+                orderProcessor.ProcessOrder(Cart, shippingDetails);
+                Cart.Clear();
+                return View("Thanks");
+            }
+            else
+            { 
+                return View(shippingDetails);
+            }
+        }
 
         // GET: Cart
-        public ViewResult Index(string ReturnUrl)
+        public ViewResult Index(Cart Cart, string ReturnUrl)
         {
             CartIndexViewModel model = new CartIndexViewModel
             {
-                Cart = GetCart()
+                Cart = Cart
                 ,
                 ReturnUrl = ReturnUrl
             };

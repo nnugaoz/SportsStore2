@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-
 namespace SportsStore2.WebUI.Infrastructure
 {
     public class NInjectDependencyResolver:IDependencyResolver
@@ -21,6 +20,8 @@ namespace SportsStore2.WebUI.Infrastructure
         private void Bindings()
         {
             kernel.Bind<IProductRepository>().To<EFProductRepository>();
+
+            kernel.Bind<IOrderProcessor>().To<SimplestOrderProcessor>();
         }
 
         public object GetService(Type serviceType)
