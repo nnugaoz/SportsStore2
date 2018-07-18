@@ -36,6 +36,8 @@ namespace SportsStore2.Domain.Concrete
                     lProduct.Price = p_Product.Price;
                     lProduct.Description = p_Product.Description;
                     lProduct.Category = p_Product.Category;
+                    lProduct.ImageData = p_Product.ImageData;
+                    lProduct.ImageMimeType = p_Product.ImageMimeType;
                 }
             }
 

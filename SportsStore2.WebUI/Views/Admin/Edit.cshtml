@@ -9,7 +9,7 @@
     <div class="panel-heading">
         <h3>Edit @Model.Name</h3>
     </div>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="form-horizontal">
             @Html.HiddenFor(e => e.ProductID)
@@ -17,9 +17,10 @@
                 @foreach (var property in ViewData.ModelMetadata.Properties)
                 {
                     <div class="form-group">
-                        <label>@property.PropertyName</label>
-                        @if (property.PropertyName != "ProductID")
+                        @if (property.PropertyName != "ProductID" && property.PropertyName != "ImageData" && property.PropertyName != "ImageMimeType")
                         {
+                            <label>@property.PropertyName</label>
+
                             if (property.PropertyName == "Description")
                             {
                                 @Html.TextArea(property.PropertyName, new { @class = "form-control", rows = 2 })
@@ -30,6 +31,19 @@
                             }
                         }
                         @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                }
+                <a href="#" onclick="$('#Image').trigger('click'); return false;" style="position:relative;">
+                    Product Image
+                    <input type="file" id="Image" name="Image" style="position:absolute;top:0px;left:0px;opacity:0" onchange="$('#lblFilePath').html($(this).val())" />
+                </a>
+                <div>
+                    <span class="text-info" id="lblFilePath"></span>
+                </div>
+                @if (Model.ImageData != null)
+                {
+                    <div>
+                        <img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetImage", "Product", new { p_ProductID=Model.ProductID})" />
                     </div>
                 }
             </div>

@@ -1,21 +1,24 @@
-﻿
-@model SportsStore2.WebUI.Models.ProductListViewModel
+﻿@model SportsStore2.WebUI.Models.ProductListViewModel
 
 @{
     ViewBag.Title = "List";
 }
 
-@foreach(var p in Model.Products)
+@foreach (var p in Model.Products)
 {
     <div class="well">
+        @if (p.ImageData != null)
+        {
+            <img class="pull-left img-thumbnail" width="80" height="80" src="@Url.Action("GetImage","Product",new{p_ProductID=p.ProductID})" />
+        }
         <h3>
             <strong>@p.Name</strong>
             <span class="pull-right label label-primary">@p.Price.ToString("c")</span>
         </h3>
         @using (Html.BeginForm("AddToCart", "Cart"))
         {
-            @Html.Hidden("ProductID",p.ProductID)
-            @Html.Hidden("ReturnUrl",Request.Url.PathAndQuery)
+            @Html.Hidden("ProductID", p.ProductID)
+            @Html.Hidden("ReturnUrl", Request.Url.PathAndQuery)
             <input type="submit" class="pull-right btn btn-success" value="Add to Cart" />
         }
         <span class="lead">@p.Description</span>

@@ -40,10 +40,16 @@ namespace SportsStore2.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Product p_Product)
+        public ActionResult Edit(Product p_Product, HttpPostedFileBase Image = null)
         {
             if (ModelState.IsValid)
             {
+                if (Image != null)
+                {
+                    p_Product.ImageData = new byte[Image.ContentLength];
+                    Image.InputStream.Read(p_Product.ImageData, 0, Image.ContentLength);
+                    p_Product.ImageMimeType = Image.ContentType;
+                }
                 repository.Save(p_Product);
                 TempData["Message"] = string.Format("{0} has been saved", p_Product.Name);
                 return RedirectToAction("Index");
